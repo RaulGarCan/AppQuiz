@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSiguiente;
     private TextView tvTextoPregunta, tvNumeroPregunta;
     private RadioButton rbOpcion1, rbOpcion2, rbOpcion3, rbOpcion4;
+    private RadioGroup rgOpciones;
     private int nPreguntas = 0;
     private ArrayList<Respuesta> respuestaSeleccionadas = new ArrayList<>();
     @Override
@@ -31,15 +32,17 @@ public class MainActivity extends AppCompatActivity {
         rbOpcion2 = findViewById(R.id.rb_opcion2);
         rbOpcion3 = findViewById(R.id.rb_opcion3);
         rbOpcion4 = findViewById(R.id.rb_opcion4);
-
-        rbOpcion1.setChecked(true);
+        rgOpciones = findViewById(R.id.rg_opciones);
 
         prepararPreguntas();
         avanzarPregunta();
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                avanzarPregunta();
+                if(hayOpcionSeleccionada()){
+                    avanzarPregunta();
+                    rgOpciones.clearCheck();
+                }
             }
         });
     }
@@ -162,5 +165,11 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Opcion 4", false));
 
         preguntas.add(new Pregunta("Pregunta 10",respuestas));
+    }
+    public boolean hayOpcionSeleccionada(){
+        if(rbOpcion1.isChecked() || rbOpcion2.isChecked() || rbOpcion3.isChecked() || rbOpcion4.isChecked()){
+            return true;
+        }
+        return false;
     }
 }
