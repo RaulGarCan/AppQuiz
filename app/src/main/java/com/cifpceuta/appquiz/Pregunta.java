@@ -1,8 +1,9 @@
 package com.cifpceuta.appquiz;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pregunta {
+public class Pregunta implements Serializable {
     private String textoPregunta;
     private ArrayList<Respuesta> respuestas;
 
@@ -33,5 +34,13 @@ public class Pregunta {
     }
     public void removeRespuesta(Respuesta r){
         this.respuestas.remove(r);
+    }
+    public Respuesta getRespuestaCorrecta(){
+        for(Respuesta r : respuestas){
+            if(r.isEsCorrecta()){
+                return r;
+            }
+        }
+        return null;
     }
 }
