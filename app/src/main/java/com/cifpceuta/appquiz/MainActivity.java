@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Opcion 3", false));
         respuestas.add(new Respuesta("Opcion 4", false));
 
-        preguntas.add(new Pregunta("Pregunta 1",respuestas));
+        Pregunta p1 = new Pregunta("Pregunta 1",respuestas);
+        p1.randomizarRespuestas();
+        preguntas.add(p1);
 
         respuestas = new ArrayList<>();
         respuestas.add(new Respuesta("Opcion 1", true));

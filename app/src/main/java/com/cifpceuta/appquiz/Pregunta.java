@@ -1,7 +1,10 @@
 package com.cifpceuta.appquiz;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Pregunta implements Serializable {
     private String textoPregunta;
@@ -42,5 +45,22 @@ public class Pregunta implements Serializable {
             }
         }
         return null;
+    }
+    public void randomizarRespuestas(){
+        ArrayList<Respuesta> respuestasRandom = new ArrayList<>();
+        ArrayList<Integer> numerosRand = new ArrayList<>();
+        for(int i=0; i<respuestas.size(); i++){
+            numerosRand.add(i);
+        }
+        Log.d("arrayRandom","ArrayRandoms: "+numerosRand);
+        for(int i=0; i<respuestas.size(); i++){
+            Log.d("iteracionRandom","i: "+i);
+            int rand = numerosRand.get((int)(Math.random()*numerosRand.size()));
+            numerosRand.remove(rand);
+            Log.d("arrayRandom","ArrayRandoms: "+numerosRand);
+            Log.d("randomNumber", "RandomNumber: "+rand);
+            respuestasRandom.add(respuestas.get(rand));
+        }
+        respuestas = respuestasRandom;
     }
 }
