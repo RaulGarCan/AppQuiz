@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityPreferencias"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_random_preguntas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Randomizar Preguntas"
+        android:textSize="30sp"
+        android:layout_margin="25dp"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_random_respuestas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Randomizar Respuestas"
+        android:textSize="28sp"
+        android:layout_margin="25dp"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_mostrar_respuestas_correctas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mostrar Respuestas"
+        android:textSize="30sp"
+        android:layout_margin="25dp"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_countdown_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activar Cuenta Atrás"
+        android:textSize="30sp"
+        android:layout_margin="25dp"/>
+    <Button
+        android:id="@+id/btn_salir_preferencias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Volver"/>
+</LinearLayout>

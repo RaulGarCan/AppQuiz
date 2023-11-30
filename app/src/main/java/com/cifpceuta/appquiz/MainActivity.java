@@ -1,14 +1,19 @@
 package com.cifpceuta.appquiz;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 
@@ -19,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rbOpcion1, rbOpcion2, rbOpcion3, rbOpcion4;
     private RadioGroup rgOpciones;
     private int nPreguntas = 0;
+    private Toolbar toolbar;
     private ArrayList<Respuesta> respuestaSeleccionadas = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         rbOpcion3 = findViewById(R.id.rb_opcion3);
         rbOpcion4 = findViewById(R.id.rb_opcion4);
         rgOpciones = findViewById(R.id.rg_opciones);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         prepararPreguntas();
         avanzarPregunta();
@@ -94,7 +102,13 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("9", false));
 
         Pregunta p = new Pregunta("¿Cuántas zonas horarias tiene Rusia?",respuestas);
-        p.randomizarRespuestas();
+
+        SharedPreferences prefs = getSharedPreferences("PreferenciasAppQuiz", MODE_PRIVATE);
+        boolean isRandomRespuestas = prefs.getBoolean("isRandomRespuestas",false);
+
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -104,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Flor del Desierto", false));
 
         p = new Pregunta("¿Cuál es la flor nacional de Japón?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -114,7 +130,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("14", false));
 
         p = new Pregunta("¿Cuántas franjas tiene la bandera de Estados Unidos?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -124,7 +142,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Pez Payaso", false));
 
         p = new Pregunta("¿Cuál es el animal nacional de Australia?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -134,7 +154,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("356", false));
 
         p = new Pregunta("¿Cuántos días le toma a la tierra dar una vuelta a la órbita del sol?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -144,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Romanos", false));
 
         p = new Pregunta("¿Cuál de los siguientes imperios no tenía un idioma escrito?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -154,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Istambulia", false));
 
         p = new Pregunta("¿Cómo se llamaba Estambul antes de 1923?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -164,7 +190,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("Reino Unido", false));
 
         p = new Pregunta("¿Qué país tiene la mayor cantidad de islas en el mundo?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -174,7 +202,9 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("San Marino", false));
 
         p = new Pregunta("¿Cuál es el país más pequeño del mundo?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
         respuestas = new ArrayList<>();
@@ -184,10 +214,15 @@ public class MainActivity extends AppCompatActivity {
         respuestas.add(new Respuesta("76", false));
 
         p = new Pregunta("¿Cuántas teclas tiene un piano?",respuestas);
-        p.randomizarRespuestas();
+        if (isRandomRespuestas){
+            p.randomizarRespuestas();
+        }
         preguntas.add(p);
 
-        randomizarPreguntas();
+        boolean isRandomPreguntas = prefs.getBoolean("isRandomPreguntas",false);
+        if(isRandomPreguntas){
+            randomizarPreguntas();
+        }
     }
     public boolean hayOpcionSeleccionada(){
         if(rbOpcion1.isChecked() || rbOpcion2.isChecked() || rbOpcion3.isChecked() || rbOpcion4.isChecked()){
@@ -207,5 +242,22 @@ public class MainActivity extends AppCompatActivity {
             preguntasRandom.add(preguntas.get(rand));
         }
         preguntas = preguntasRandom;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_preferencias,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.preferencias){
+            startActivity(new Intent(this, ActivityPreferencias.class));
+        }
+
+        return true;
     }
 }

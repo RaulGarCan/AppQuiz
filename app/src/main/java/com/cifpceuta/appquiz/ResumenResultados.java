@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import java.util.ArrayList;
 
@@ -15,12 +18,21 @@ public class ResumenResultados extends AppCompatActivity {
     private ArrayList<Respuesta> respuestasDadas = new ArrayList<>();
     private int nPreguntas;
     private ListView lvResultados;
+    private Button btnVolver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resumen_resultados);
 
         lvResultados = findViewById(R.id.lv_resultados);
+        btnVolver = findViewById(R.id.btn_volver);
+
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                volver(v);
+            }
+        });
 
         if(this.getIntent()!=null){
             Intent intent = this.getIntent();
@@ -42,5 +54,8 @@ public class ResumenResultados extends AppCompatActivity {
         }
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.resumen_preguntas,R.id.tv_resultado_pregunta, resultados);
         lvResultados.setAdapter(arrayAdapter);
+    }
+    public void volver(View view){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

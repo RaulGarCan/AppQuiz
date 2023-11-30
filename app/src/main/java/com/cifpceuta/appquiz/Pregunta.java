@@ -1,5 +1,6 @@
 package com.cifpceuta.appquiz;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import java.io.Serializable;
