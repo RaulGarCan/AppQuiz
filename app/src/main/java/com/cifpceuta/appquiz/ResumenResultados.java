@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -38,25 +39,27 @@ public class ResumenResultados extends AppCompatActivity {
         if(this.getIntent()!=null){
             Intent intent = this.getIntent();
             nPreguntas = intent.getIntExtra("nPreguntas",-1);
+            Log.d("nPreguntasResumen",nPreguntas+"");
             for(int i = 0; i<nPreguntas; i++){
                 preguntas.add((Pregunta) intent.getSerializableExtra("pregunta"+i));
-            }
-            for(int i = 0; i<nPreguntas; i++){
-               respuestasDadas.add((Respuesta) intent.getSerializableExtra("respuesta"+i));
+                respuestasDadas.add((Respuesta) intent.getSerializableExtra("respuesta"+i));
             }
         }
         SharedPreferences prefs = getSharedPreferences("PreferenciasAppQuiz", MODE_PRIVATE);
         boolean isMostrarRespuestas = prefs.getBoolean("isMostrarRespuestas",false);
         ArrayList<String> resultados = new ArrayList<>();
-        for(int i = 0; i<preguntas.size(); i++){
+
+        Log.d("preguntasSizeResumen",preguntas.size()+"");
+        for(int i = 0; i<nPreguntas; i++){
             if(!isMostrarRespuestas) {
-                if (preguntas.get(i).getRespuestaCorrecta().equals(respuestasDadas.get(i))) {
+                if (respuestasDadas.get(i).isEsCorrecta()) {
                     resultados.add(preguntas.get(i).getTextoPregunta() + " Correcta");
                 } else {
                     resultados.add(preguntas.get(i).getTextoPregunta() + " Errónea");
                 }
             } else {
-                if (preguntas.get(i).getRespuestaCorrecta().equals(respuestasDadas.get(i))) {
+                Log.d("i del for ",i+"");
+                if (respuestasDadas.get(i).isEsCorrecta()) {
                     resultados.add(preguntas.get(i).getTextoPregunta() + " Correcta");
                 } else {
                     resultados.add(preguntas.get(i).getTextoPregunta() + " Errónea -> "+preguntas.get(i).getRespuestaCorrecta().getTextoRespuesta());

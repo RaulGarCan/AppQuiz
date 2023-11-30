@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ArrayList<Respuesta> respuestaSeleccionadas = new ArrayList<>();
     private CountDownTimer countdown;
-    private boolean quedaTiempo = true, respuestaAniadida = false;
+    private boolean tiempoAcabado = false;
+    private Respuesta r;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,21 +48,56 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         prepararPreguntas();
-        avanzarPregunta();
+        actualizarInterfaz();
+
+        rbOpcion1.setChecked(true);
+
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(hayOpcionSeleccionada()){
-                    quedaTiempo = true;
-                    respuestaAniadida = false;
                     avanzarPregunta();
-                    rgOpciones.clearCheck();
-                    respuestaAniadida = true;
+                    //rgOpciones.clearCheck();
                 }
             }
         });
     }
     public void avanzarPregunta(){
+        if(nPreguntas==9){
+            Intent intent = new Intent(this, ResumenResultados.class);
+            Log.d("nPreguntas",nPreguntas+"");
+            intent.putExtra("nPreguntas",nPreguntas);
+            Log.d("preguntasSizeMain",preguntas.size()+"");
+            for(int i = 0; i<preguntas.size(); i++){
+                intent.putExtra("pregunta"+i,preguntas.get(i));
+                intent.putExtra("respuesta"+i,respuestaSeleccionadas.get(i));
+            }
+            Log.d("LlamadaResumen","Llamando al Activity Resultados");
+            startActivity(intent);
+        } else {
+            // Guarda la respuesta seleccionada
+            if (!tiempoAcabado) {
+                if (rbOpcion1.isChecked()) {
+                    r = preguntas.get(nPreguntas).getRespuestas().get(0);
+                } else if (rbOpcion2.isChecked()) {
+                    r = preguntas.get(nPreguntas).getRespuestas().get(1);
+                } else if (rbOpcion3.isChecked()) {
+                    r = preguntas.get(nPreguntas).getRespuestas().get(2);
+                } else {
+                    r = preguntas.get(nPreguntas).getRespuestas().get(3);
+                }
+                respuestaSeleccionadas.add(r);
+            } else {
+                r = new Respuesta("Fuera de Tiempo", false);
+                Log.d("sinTiempo", r.toString());
+                respuestaSeleccionadas.add(r);
+            }
+            nPreguntas++;
+            actualizarInterfaz();
+        }
+    }
+    public void colocarCountdown(){
+        tiempoAcabado = false;
         SharedPreferences prefs = getSharedPreferences("PreferenciasAppQuiz", MODE_PRIVATE);
         boolean isActivarCountdown = prefs.getBoolean("isActivarCountdown",false);
         if(isActivarCountdown){
@@ -68,57 +105,31 @@ public class MainActivity extends AppCompatActivity {
             if(countdown!=null){
                 countdown.cancel();
             }
-            countdown = new CountDownTimer(16000, 1000) {
+            countdown = new CountDownTimer(5000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     tvCountdown.setText(""+(millisUntilFinished / 1000));
                 }
 
                 public void onFinish() {
-                    if(!respuestaAniadida){
-                        tvCountdown.setText("¡Se acabó el tiempo!");
-                        respuestaSeleccionadas.add(new Respuesta("",false));
-                        quedaTiempo = false;
-                    }
+                    tiempoAcabado=true;
+                    tvCountdown.setText("¡Se acabó el tiempo!");
                 }
             }.start();
         }
-        if(!btnSiguiente.getText().toString().equalsIgnoreCase("Comprobar")){
-            tvNumeroPregunta.setText(nPreguntas+1+"/"+preguntas.size());
-            // Guarda la respuesta seleccionada
-            if(quedaTiempo) {
-                if (rbOpcion1.isChecked()) {
-                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(0));
-                } else if (rbOpcion2.isChecked()) {
-                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(1));
-                } else if (rbOpcion3.isChecked()) {
-                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(2));
-                } else {
-                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(3));
-                }
-            }
-            // Cambia el texto del botón en la última pregunta
-            if(nPreguntas==preguntas.size()-1){
-                btnSiguiente.setText("Comprobar");
-            }
-            // Actualiza los datos
-            tvTextoPregunta.setText(preguntas.get(nPreguntas).getTextoPregunta());
-            rbOpcion1.setText(preguntas.get(nPreguntas).getRespuestas().get(0).getTextoRespuesta());
-            rbOpcion2.setText(preguntas.get(nPreguntas).getRespuestas().get(1).getTextoRespuesta());
-            rbOpcion3.setText(preguntas.get(nPreguntas).getRespuestas().get(2).getTextoRespuesta());
-            rbOpcion4.setText(preguntas.get(nPreguntas).getRespuestas().get(3).getTextoRespuesta());
-
-            nPreguntas++;
-        } else {
-            Intent intent = new Intent(this, ResumenResultados.class);
-            intent.putExtra("nPreguntas",nPreguntas);
-            for(int i = 0; i<preguntas.size(); i++){
-                intent.putExtra("pregunta"+i,preguntas.get(i));
-            }
-            for(int i = 0; i<respuestaSeleccionadas.size(); i++){
-                intent.putExtra("respuesta"+i,respuestaSeleccionadas.get(i));
-            }
-            startActivity(intent);
+    }
+    public void actualizarInterfaz(){
+        colocarCountdown();
+        // Cambia el texto del botón en la última pregunta
+        if(nPreguntas==preguntas.size()-1){
+            btnSiguiente.setText("Comprobar");
         }
+        // Actualiza los datos
+        tvNumeroPregunta.setText(nPreguntas+1+"/"+preguntas.size());
+        tvTextoPregunta.setText(preguntas.get(nPreguntas).getTextoPregunta());
+        rbOpcion1.setText(preguntas.get(nPreguntas).getRespuestas().get(0).getTextoRespuesta());
+        rbOpcion2.setText(preguntas.get(nPreguntas).getRespuestas().get(1).getTextoRespuesta());
+        rbOpcion3.setText(preguntas.get(nPreguntas).getRespuestas().get(2).getTextoRespuesta());
+        rbOpcion4.setText(preguntas.get(nPreguntas).getRespuestas().get(3).getTextoRespuesta());
     }
     public void prepararPreguntas(){
         // Creamos las preguntas
