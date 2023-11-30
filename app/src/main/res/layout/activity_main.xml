@@ -6,62 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+    <LinearLayout
         android:layout_width="350dp"
-        android:layout_marginStart="25dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
-                <TextView
-                    android:id="@+id/tv_texto_pregunta"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:layout_height="wrap_content"
-                    android:text="Pregunta" />
-                <TextView
-                    android:id="@+id/tv_contador_pregunta"
-                    android:layout_width="wrap_content"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-        </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp">
-
-        <RadioGroup
-            android:id="@+id/rg_opciones"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_texto_pregunta"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Pregunta"
+                android:textSize="20sp" />
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp">
 
-            <RadioButton
-                android:id="@+id/rb_opcion1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButton" />
-            <RadioButton
-                android:id="@+id/rb_opcion2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButton" />
-            <RadioButton
-                android:id="@+id/rb_opcion3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButton" />
-            <RadioButton
-                android:id="@+id/rb_opcion4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButton" />
-        </RadioGroup>
-    </LinearLayout>
+                <RadioGroup
+                    android:id="@+id/rg_opciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:id="@+id/rb_opcion1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RadioButton" />
+                    <RadioButton
+                        android:id="@+id/rb_opcion2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RadioButton" />
+                    <RadioButton
+                        android:id="@+id/rb_opcion3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RadioButton" />
+                    <RadioButton
+                        android:id="@+id/rb_opcion4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RadioButton" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
     <Button
         android:id="@+id/btn_siguiente"
         android:gravity="center"
@@ -70,5 +73,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Siguiente" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+        <TextView
+            android:id="@+id/tv_contador_pregunta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginEnd="15dp"
+            android:text="10/10"/>
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -35,9 +35,9 @@ public class ResumenResultados extends AppCompatActivity {
         ArrayList<String> resultados = new ArrayList<>();
         for(int i = 0; i<preguntas.size(); i++){
            if(preguntas.get(i).getRespuestaCorrecta().equals(respuestasDadas.get(i))){
-               resultados.add(preguntas.get(i).getTextoPregunta()+": correcta");
+               resultados.add(preguntas.get(i).getTextoPregunta()+" Correcta");
            } else {
-               resultados.add(preguntas.get(i).getTextoPregunta()+": errónea");
+               resultados.add(preguntas.get(i).getTextoPregunta()+" Errónea");
            }
         }
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.resumen_preguntas,R.id.tv_resultado_pregunta, resultados);

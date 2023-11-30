@@ -3,6 +3,8 @@ package com.cifpceuta.appquiz;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -52,13 +54,9 @@ public class Pregunta implements Serializable {
         for(int i=0; i<respuestas.size(); i++){
             numerosRand.add(i);
         }
-        Log.d("arrayRandom","ArrayRandoms: "+numerosRand);
         for(int i=0; i<respuestas.size(); i++){
-            Log.d("iteracionRandom","i: "+i);
-            int rand = numerosRand.get((int)(Math.random()*numerosRand.size()));
+            Integer rand = numerosRand.get((int)(Math.random()*numerosRand.size()));
             numerosRand.remove(rand);
-            Log.d("arrayRandom","ArrayRandoms: "+numerosRand);
-            Log.d("randomNumber", "RandomNumber: "+rand);
             respuestasRandom.add(respuestas.get(rand));
         }
         respuestas = respuestasRandom;
