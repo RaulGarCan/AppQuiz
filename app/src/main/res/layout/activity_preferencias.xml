@@ -12,28 +12,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Randomizar Preguntas"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:layout_margin="25dp"/>
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_random_respuestas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Randomizar Respuestas"
-        android:textSize="28sp"
+        android:textSize="26sp"
         android:layout_margin="25dp"/>
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_mostrar_respuestas_correctas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mostrar Respuestas"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:layout_margin="25dp"/>
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_countdown_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Activar Cuenta Atrás"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:layout_margin="25dp"/>
     <Button
         android:id="@+id/btn_salir_preferencias"

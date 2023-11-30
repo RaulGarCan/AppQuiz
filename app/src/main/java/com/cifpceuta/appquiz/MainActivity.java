@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private int nPreguntas = 0;
     private Toolbar toolbar;
     private ArrayList<Respuesta> respuestaSeleccionadas = new ArrayList<>();
+    private CountDownTimer countdown;
+    private boolean quedaTiempo = true, respuestaAniadida = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,24 +51,50 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(hayOpcionSeleccionada()){
+                    quedaTiempo = true;
+                    respuestaAniadida = false;
                     avanzarPregunta();
                     rgOpciones.clearCheck();
+                    respuestaAniadida = true;
                 }
             }
         });
     }
     public void avanzarPregunta(){
+        SharedPreferences prefs = getSharedPreferences("PreferenciasAppQuiz", MODE_PRIVATE);
+        boolean isActivarCountdown = prefs.getBoolean("isActivarCountdown",false);
+        if(isActivarCountdown){
+            TextView tvCountdown = findViewById(R.id.tv_countdown_pregunta);
+            if(countdown!=null){
+                countdown.cancel();
+            }
+            countdown = new CountDownTimer(16000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    tvCountdown.setText(""+(millisUntilFinished / 1000));
+                }
+
+                public void onFinish() {
+                    if(!respuestaAniadida){
+                        tvCountdown.setText("¡Se acabó el tiempo!");
+                        respuestaSeleccionadas.add(new Respuesta("",false));
+                        quedaTiempo = false;
+                    }
+                }
+            }.start();
+        }
         if(!btnSiguiente.getText().toString().equalsIgnoreCase("Comprobar")){
             tvNumeroPregunta.setText(nPreguntas+1+"/"+preguntas.size());
             // Guarda la respuesta seleccionada
-            if(rbOpcion1.isChecked()){
-                respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(0));
-            } else if (rbOpcion2.isChecked()) {
-                respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(1));
-            } else if (rbOpcion3.isChecked()) {
-                respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(2));
-            } else {
-                respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(3));
+            if(quedaTiempo) {
+                if (rbOpcion1.isChecked()) {
+                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(0));
+                } else if (rbOpcion2.isChecked()) {
+                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(1));
+                } else if (rbOpcion3.isChecked()) {
+                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(2));
+                } else {
+                    respuestaSeleccionadas.add(preguntas.get(nPreguntas).getRespuestas().get(3));
+                }
             }
             // Cambia el texto del botón en la última pregunta
             if(nPreguntas==preguntas.size()-1){

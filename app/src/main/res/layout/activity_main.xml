@@ -17,7 +17,7 @@
         app:menu="@menu/menu_preferencias"/>
 
     <LinearLayout
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -27,6 +27,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_countdown_pregunta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:layout_marginBottom="10dp"
+            android:text=""/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -3,6 +3,7 @@ package com.cifpceuta.appquiz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
@@ -44,13 +45,23 @@ public class ResumenResultados extends AppCompatActivity {
                respuestasDadas.add((Respuesta) intent.getSerializableExtra("respuesta"+i));
             }
         }
+        SharedPreferences prefs = getSharedPreferences("PreferenciasAppQuiz", MODE_PRIVATE);
+        boolean isMostrarRespuestas = prefs.getBoolean("isMostrarRespuestas",false);
         ArrayList<String> resultados = new ArrayList<>();
         for(int i = 0; i<preguntas.size(); i++){
-           if(preguntas.get(i).getRespuestaCorrecta().equals(respuestasDadas.get(i))){
-               resultados.add(preguntas.get(i).getTextoPregunta()+" Correcta");
-           } else {
-               resultados.add(preguntas.get(i).getTextoPregunta()+" Errónea");
-           }
+            if(!isMostrarRespuestas) {
+                if (preguntas.get(i).getRespuestaCorrecta().equals(respuestasDadas.get(i))) {
+                    resultados.add(preguntas.get(i).getTextoPregunta() + " Correcta");
+                } else {
+                    resultados.add(preguntas.get(i).getTextoPregunta() + " Errónea");
+                }
+            } else {
+                if (preguntas.get(i).getRespuestaCorrecta().equals(respuestasDadas.get(i))) {
+                    resultados.add(preguntas.get(i).getTextoPregunta() + " Correcta");
+                } else {
+                    resultados.add(preguntas.get(i).getTextoPregunta() + " Errónea -> "+preguntas.get(i).getRespuestaCorrecta().getTextoRespuesta());
+                }
+            }
         }
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.resumen_preguntas,R.id.tv_resultado_pregunta, resultados);
         lvResultados.setAdapter(arrayAdapter);
