@@ -63,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
         rbOpcion3.setText(preguntas.get(nPreguntas).getRespuestas().get(2).getTextoRespuesta());
         rbOpcion4.setText(preguntas.get(nPreguntas).getRespuestas().get(3).getTextoRespuesta());
 
-        rbOpcion1.setChecked(true);
+        //rbOpcion1.setChecked(true);
 
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(hayOpcionSeleccionada()){
                     avanzarPregunta();
-                    //rgOpciones.clearCheck();
+                    rgOpciones.clearCheck();
                 }
             }
         });
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             if(countdown!=null){
                 countdown.cancel();
             }
-            countdown = new CountDownTimer(5000, 1000) {
+            countdown = new CountDownTimer(16000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     tvCountdown.setText(""+(millisUntilFinished / 1000));
                 }
