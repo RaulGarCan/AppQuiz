@@ -1,5 +1,6 @@
 package com.cifpceuta.appquiz;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -21,6 +22,7 @@ public class ResumenResultados extends AppCompatActivity {
     private int nPreguntas;
     private ListView lvResultados;
     private Button btnVolver;
+    private ArrayList<String> resultados;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,7 @@ public class ResumenResultados extends AppCompatActivity {
         }
         SharedPreferences prefs = getSharedPreferences("PreferenciasAppQuiz", MODE_PRIVATE);
         boolean isMostrarRespuestas = prefs.getBoolean("isMostrarRespuestas",false);
-        ArrayList<String> resultados = new ArrayList<>();
+        resultados = new ArrayList<>();
 
         Log.d("preguntasSizeResumen",preguntas.size()+"");
         for(int i = 0; i<nPreguntas; i++){

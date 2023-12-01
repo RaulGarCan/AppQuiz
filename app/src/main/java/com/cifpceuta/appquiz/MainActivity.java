@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup rgOpciones;
     private int nPreguntas = 0;
     private Toolbar toolbar;
-    private ArrayList<Respuesta> respuestaSeleccionadas = new ArrayList<>();
+    private ArrayList<Respuesta> respuestasSeleccionadas = new ArrayList<>();
     private CountDownTimer countdown;
     private boolean tiempoAcabado = false;
     private Respuesta r;
@@ -48,7 +48,20 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         prepararPreguntas();
-        actualizarInterfaz();
+
+        colocarCountdown();
+        // Cambia el texto del botón en la última pregunta
+        Log.d("nPreguntasActualizarInterfaz",nPreguntas+"");
+        if(nPreguntas==preguntas.size()-1){
+            btnSiguiente.setText("Comprobar");
+        }
+        // Actualiza los datos
+        tvNumeroPregunta.setText(nPreguntas+1+"/"+preguntas.size());
+        tvTextoPregunta.setText(preguntas.get(nPreguntas).getTextoPregunta());
+        rbOpcion1.setText(preguntas.get(nPreguntas).getRespuestas().get(0).getTextoRespuesta());
+        rbOpcion2.setText(preguntas.get(nPreguntas).getRespuestas().get(1).getTextoRespuesta());
+        rbOpcion3.setText(preguntas.get(nPreguntas).getRespuestas().get(2).getTextoRespuesta());
+        rbOpcion4.setText(preguntas.get(nPreguntas).getRespuestas().get(3).getTextoRespuesta());
 
         rbOpcion1.setChecked(true);
 
@@ -63,38 +76,52 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void avanzarPregunta(){
-        if(nPreguntas==9){
-            Intent intent = new Intent(this, ResumenResultados.class);
-            Log.d("nPreguntas",nPreguntas+"");
-            intent.putExtra("nPreguntas",nPreguntas);
-            Log.d("preguntasSizeMain",preguntas.size()+"");
-            for(int i = 0; i<preguntas.size(); i++){
-                intent.putExtra("pregunta"+i,preguntas.get(i));
-                intent.putExtra("respuesta"+i,respuestaSeleccionadas.get(i));
-            }
-            Log.d("LlamadaResumen","Llamando al Activity Resultados");
-            startActivity(intent);
-        } else {
-            // Guarda la respuesta seleccionada
-            if (!tiempoAcabado) {
-                if (rbOpcion1.isChecked()) {
-                    r = preguntas.get(nPreguntas).getRespuestas().get(0);
-                } else if (rbOpcion2.isChecked()) {
-                    r = preguntas.get(nPreguntas).getRespuestas().get(1);
-                } else if (rbOpcion3.isChecked()) {
-                    r = preguntas.get(nPreguntas).getRespuestas().get(2);
-                } else {
-                    r = preguntas.get(nPreguntas).getRespuestas().get(3);
-                }
-                respuestaSeleccionadas.add(r);
+        // Guarda la respuesta seleccionada
+        if (!tiempoAcabado) {
+            if (rbOpcion1.isChecked()) {
+                r = preguntas.get(nPreguntas).getRespuestas().get(0);
+            } else if (rbOpcion2.isChecked()) {
+                r = preguntas.get(nPreguntas).getRespuestas().get(1);
+            } else if (rbOpcion3.isChecked()) {
+                r = preguntas.get(nPreguntas).getRespuestas().get(2);
             } else {
-                r = new Respuesta("Fuera de Tiempo", false);
-                Log.d("sinTiempo", r.toString());
-                respuestaSeleccionadas.add(r);
+                r = preguntas.get(nPreguntas).getRespuestas().get(3);
             }
-            nPreguntas++;
-            actualizarInterfaz();
+        } else {
+            r = new Respuesta("Fuera de Tiempo", false);
+            Log.d("sinTiempo", r.toString());
         }
+        respuestasSeleccionadas.add(r);
+        Log.d("nPreguntasAdd",nPreguntas+"");
+
+        nPreguntas++;
+
+        if(nPreguntas==10){
+            llamarActivityResumen();
+        } else {
+            actualizarInterfaz();
+
+        }
+    }
+    public void llamarActivityResumen(){
+        if(countdown!=null){
+            countdown.cancel();
+        }
+        Intent intent = new Intent(this, ResumenResultados.class);
+        Log.d("nPreguntas",nPreguntas+"");
+        intent.putExtra("nPreguntas",nPreguntas);
+        Log.d("preguntasSizeMain",preguntas.size()+"");
+        Log.d("preguntas",preguntas.toString());
+        for(int i = 0; i<preguntas.size(); i++){
+            intent.putExtra("pregunta"+i,preguntas.get(i));
+            intent.putExtra("respuesta"+i, respuestasSeleccionadas.get(i));
+        }
+        Log.d("LlamadaResumen","Llamando al Activity Resultados");
+        Log.d("preguntas",preguntas.toString());
+        if(respuestasSeleccionadas.get(respuestasSeleccionadas.size()-1)==null){
+            Log.d("respuestaDada","null");
+        }
+        startActivity(intent);
     }
     public void colocarCountdown(){
         tiempoAcabado = false;
@@ -120,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     public void actualizarInterfaz(){
         colocarCountdown();
         // Cambia el texto del botón en la última pregunta
+        Log.d("nPreguntasActualizarInterfaz",nPreguntas+"");
         if(nPreguntas==preguntas.size()-1){
             btnSiguiente.setText("Comprobar");
         }
